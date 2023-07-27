@@ -44,5 +44,12 @@
       "!include_dir_merge_list scalar",
       "!include_dir_merge_named scalar"
     ]
-  }
+  },
+  "mounts": [
+    // Custom configuration directory
+    "source=${localEnv:USERPROFILE}\\brewfather_hassio\\config,target=${containerWorkspaceFolder}/config,type=bind",
+
+    // Brewfather custom component
+    "source=D:\\projects\\mvddonk\\brewfather\\custom_components\\brewfather,target=${containerWorkspaceFolder}/config/custom_components/brewfather,type=bind",
+  ]
 }
