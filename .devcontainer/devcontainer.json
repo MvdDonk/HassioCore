@@ -70,9 +70,9 @@
   },
   "mounts": [
     // Custom configuration directory
-    "source=${localEnv:USERPROFILE}\\brewfather_hassio\\config,target=${containerWorkspaceFolder}/config,type=bind",
+    // "source=${localEnv:USERPROFILE}\\brewfather_hassio\\config,target=${containerWorkspaceFolder}/config,type=bind",
 
     // Brewfather custom component
-    "source=D:\\MvdDonk\\Brewfather\\Brewfather\\custom_components\\brewfather,target=${containerWorkspaceFolder}/config/custom_components/brewfather,type=bind",
+    "source=D:\\MvdDonk\\Brewfather\\Brewfather\\custom_components\\brewfather,target=${containerWorkspaceFolder}/config/custom_components/brewfather,type=bind"
   ]
 }
