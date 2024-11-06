@@ -1,4 +1,5 @@
 """Constants for the Fitbit platform."""
+
 from __future__ import annotations
 
 from enum import StrEnum
@@ -67,14 +68,21 @@ class FitbitUnitSystem(StrEnum):
     """Use United Kingdom units."""
 
 
+CONF_SCOPE: Final = "scope"
+
+
+class FitbitScope(StrEnum):
+    """OAuth scopes for fitbit."""
+
+    ACTIVITY = "activity"
+    HEART_RATE = "heartrate"
+    NUTRITION = "nutrition"
+    PROFILE = "profile"
+    DEVICE = "settings"
+    SLEEP = "sleep"
+    WEIGHT = "weight"
+
+
 OAUTH2_AUTHORIZE = "https://www.fitbit.com/oauth2/authorize"
 OAUTH2_TOKEN = "https://api.fitbit.com/oauth2/token"
-OAUTH_SCOPES = [
-    "activity",
-    "heartrate",
-    "nutrition",
-    "profile",
-    "settings",
-    "sleep",
-    "weight",
-]
+OAUTH_SCOPES = [scope.value for scope in FitbitScope]

@@ -1,12 +1,16 @@
 """Philips Hue binary_sensor platform tests for V2 bridge/api."""
+
+from unittest.mock import Mock
+
 from homeassistant.core import HomeAssistant
+from homeassistant.util.json import JsonArrayType
 
 from .conftest import setup_platform
 from .const import FAKE_BINARY_SENSOR, FAKE_DEVICE, FAKE_ZIGBEE_CONNECTIVITY
 
 
 async def test_binary_sensors(
-    hass: HomeAssistant, mock_bridge_v2, v2_resources_test_data
+    hass: HomeAssistant, mock_bridge_v2: Mock, v2_resources_test_data: JsonArrayType
 ) -> None:
     """Test if all v2 binary_sensors get created with correct features."""
     await mock_bridge_v2.api.load_test_data(v2_resources_test_data)
@@ -25,19 +29,17 @@ async def test_binary_sensors(
     assert sensor.attributes["device_class"] == "motion"
 
     # test entertainment room active sensor
-    sensor = hass.states.get(
-        "binary_sensor.entertainmentroom_1_entertainment_configuration"
-    )
+    sensor = hass.states.get("binary_sensor.entertainmentroom_1")
     assert sensor is not None
     assert sensor.state == "off"
-    assert sensor.name == "Entertainmentroom 1: Entertainment Configuration"
+    assert sensor.name == "Entertainmentroom 1"
     assert sensor.attributes["device_class"] == "running"
 
     # test contact sensor
-    sensor = hass.states.get("binary_sensor.test_contact_sensor_contact")
+    sensor = hass.states.get("binary_sensor.test_contact_sensor_opening")
     assert sensor is not None
     assert sensor.state == "off"
-    assert sensor.name == "Test contact sensor Contact"
+    assert sensor.name == "Test contact sensor Opening"
     assert sensor.attributes["device_class"] == "opening"
     # test contact sensor disabled == state unknown
     mock_bridge_v2.api.emit_event(
@@ -49,7 +51,7 @@ async def test_binary_sensors(
         },
     )
     await hass.async_block_till_done()
-    sensor = hass.states.get("binary_sensor.test_contact_sensor_contact")
+    sensor = hass.states.get("binary_sensor.test_contact_sensor_opening")
     assert sensor.state == "unknown"
 
     # test tamper sensor
@@ -79,7 +81,9 @@ async def test_binary_sensors(
     assert sensor.attributes["device_class"] == "motion"
 
 
-async def test_binary_sensor_add_update(hass: HomeAssistant, mock_bridge_v2) -> None:
+async def test_binary_sensor_add_update(
+    hass: HomeAssistant, mock_bridge_v2: Mock
+) -> None:
     """Test if binary_sensor get added/updated from events."""
     await mock_bridge_v2.api.load_test_data([FAKE_DEVICE, FAKE_ZIGBEE_CONNECTIVITY])
     await setup_platform(hass, mock_bridge_v2, "binary_sensor")
